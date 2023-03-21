@@ -10,7 +10,7 @@ jobs:
         uses: aevea/action-kaniko@master
         with:
           registry: ghcr.io
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.TOKEN }}
           image: self-runner-daed
           build_file: self-runner-daed-dockerfile
           tag: latest
