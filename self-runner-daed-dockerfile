@@ -1,7 +1,7 @@
 FROM summerwind/actions-runner:ubuntu-22.04
 
 RUN sudo apt update -y && \
-    sudo apt install curl
+    sudo apt install curl -y
 
 RUN curl -sL https://deb.nodesource.com/setup_19.x | sudo bash
 
