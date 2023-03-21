@@ -1,0 +1,12 @@
+FROM summerwind/actions-runner:ubuntu-22.04
+
+RUN apt update -y && \
+    apt install curl
+
+RUN curl -sL https://deb.nodesource.com/setup_19.x | bash
+
+RUN apt install nodejs -y
+
+RUN apt-get clean autoclean && \
+    apt-get autoremove -y && \
+    rm -rf /var/lib/{apt,dpkg,cache,log}/
