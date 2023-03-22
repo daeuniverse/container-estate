@@ -4,7 +4,9 @@ on:
   workflow_dispatch:
 jobs:
   build-runner:
-#     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform: [linux/arm64,linux/amd64]
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@master
@@ -18,4 +20,4 @@ jobs:
           tag: latest
           cache: true
           cache_registry: cache
-          extra_args: "--custom-platform linux/arm64"
+          extra_args: "--custom-platform ${{ matrix.platform }}"
