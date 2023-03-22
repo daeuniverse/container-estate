@@ -5,8 +5,15 @@ on:
 jobs:
   build-runner:
     runs-on: self-hosted
+    env:
+      MANIFEST_NAME: "multiarch-build"
+      CONTEXT: "."
+      REGISTRY: "ghcr.io"
+      USER: "daeuniverse"
+      IMAGE_NAME: "self-runner-daed"
+      IMAGE_TAG: "v0.1.1"
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@master        
       - name: Install Buildah
         shell: bash
         run: |
@@ -16,28 +23,31 @@ jobs:
           unqualified-search-registries=["docker.io"]
           EOF
           
-      - name: Build multi-arch images
-        uses: redhat-actions/buildah-build@v2
-        id: build-iamge
-        with:
-          image: self-runner-daed
-          tags: v1 ${{ github.sha }}
-          context: .
-          containerfiles: self-runner-daed-dockerfile
-          platforms: linux/amd64,linux/arm64
-          
-      - name: Push to registry
-        uses: redhat-actions/push-to-registry@v2
-        with:
-          image: ${{ steps.build-image.outputs.image }}
-          tags: ${{ steps.build-image.outputs.tags }}
-          registry: ghcr.io/daeuniverse
-          username: ${{ env.REGISTRY_USER }}
-          password: ${{ env.REGISTRY_PASSWORD }}
-          extra-args: |
-            --disable-content-trust
-            
-      - name: Echo outputs
+      - name: Create multi-architecture manifest
+        shell: bash
         run: |
-          echo "${{ toJSON(steps.push.outputs) }}"
+          buildah manifest create ${MANIFEST_NAME}
+          
+      - name: Build multi-arch image
+        shell: bash
+        run: |
+          buildah bud \
+            --tag "${REGISTRY}/${USER}/${IMAGE_NAME}:${IMAGE_TAG}" \
+            --manifest ${MANIFEST_NAME} \
+            --arch amd64 \
+            ${CONTEXT}
+            
+          buildah bud \
+            --tag "${REGISTRY}/${USER}/${IMAGE_NAME}:${IMAGE_TAG}" \
+            --manifest ${MANIFEST_NAME} \
+            --arch arm64 \
+            ${CONTEXT}
+            
+#       - name: Push to registry
+#         shell: bash
+#         run: |
+#           buildah manifest push --all \
+#             ${MANIFEST_NAME} \
+#             "docker://${REGISTRY}/${USER}/${IMAGE_NAME}:${IMAGE_TAG}"
+
 
