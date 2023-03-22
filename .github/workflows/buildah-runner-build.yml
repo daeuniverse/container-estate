@@ -25,11 +25,6 @@ jobs:
           unqualified-search-registries=["docker.io"]
           EOF
           
-      - name: Create metadata manifest
-        shell: bash
-        run: |
-          buildah manifest create ${MANIFEST_NAME}
-          
       - name: Build image
         id: build-image
         uses: redhat-actions/buildah-build@v2
@@ -38,18 +33,16 @@ jobs:
           tags: latest ${{ github.sha }}
           context: .
           containerfiles: ${{ env.DOCKER_FILE }}
-          platforms: linux/amd64
-          extra-args: "--manifest ${{ env.MANIFEST_NAME }}"
 
       - name: Push to registry
         shell: bash
         run: |          
-          buildah manifest push --all \
+          buildah push \
             --creds=$USER:${{ secrets.TOKEN }} \
             ${MANIFEST_NAME} \
             "docker://${REGISTRY}/${REPO_NAME}/${IMAGE_NAME}:${IMAGE_TAG}"
             
-          buildah manifest push --all \
+          buildah push \
             --creds=$USER:${{ secrets.TOKEN }} \
             ${MANIFEST_NAME} \
             "docker://${REGISTRY}/${REPO_NAME}/${IMAGE_NAME}:latest"
