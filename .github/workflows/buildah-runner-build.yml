@@ -25,7 +25,7 @@ jobs:
           unqualified-search-registries=["docker.io"]
           EOF
           
-      - name: Create multi-architecture manifest
+      - name: Create metadata manifest
         shell: bash
         run: |
           buildah manifest create ${MANIFEST_NAME}
