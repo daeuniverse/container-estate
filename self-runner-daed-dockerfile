@@ -10,6 +10,3 @@ RUN sudo apt install nodejs -y
 RUN sudo apt-get clean autoclean && \
     sudo apt-get autoremove -y && \
     sudo rm -rf /var/lib/{apt,dpkg,cache,log}/
-
-RUN which node
-RUN node -v
