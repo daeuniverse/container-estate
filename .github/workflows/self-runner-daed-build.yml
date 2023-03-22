@@ -23,7 +23,7 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo apt-get install buildah -y
-          cat << EOF >> /etc/containers/registries.conf
+          sudo cat << EOF | tee -a /etc/containers/registries.conf
           unqualified-search-registries=["docker.io"]
           EOF
       - name: Buildah build
