@@ -1,5 +1,5 @@
 ---
-name: Buildah build for self-runner-daed
+name: Buildah multi-arch build for self-runner-daed
 on:
   workflow_dispatch:
 jobs:
@@ -7,17 +7,6 @@ jobs:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@master
-#       - name: Kaniko build
-#         uses: aevea/action-kaniko@master
-#         with:
-#           registry: ghcr.io
-#           password: ${{ secrets.TOKEN }}
-#           image: self-runner-daed
-#           build_file: self-runner-daed-dockerfile
-#           tag: latest
-#           cache: true
-#           cache_registry: cache
-#           extra_args: "--custom-platform ${{ matrix.platform }}"
       - name: Install Buildah
         shell: bash
         run: |
@@ -26,7 +15,7 @@ jobs:
           sudo cat << EOF | sudo tee -a /etc/containers/registries.conf
           unqualified-search-registries=["docker.io"]
           EOF
-      - name: Buildah build
+      - name: build multi-arch images
         uses: redhat-actions/buildah-build@v2
         with:
           image: self-runner-daed
