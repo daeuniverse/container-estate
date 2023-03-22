@@ -30,7 +30,7 @@ jobs:
         run: |
           buildah manifest create ${MANIFEST_NAME}
           
-      - name: Build multi-arch image
+      - name: Build image
         id: build-image
         uses: redhat-actions/buildah-build@v2
         with:
@@ -38,7 +38,7 @@ jobs:
           tags: latest ${{ github.sha }}
           context: .
           containerfiles: ${{ env.DOCKER_FILE }}
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           extra-args: "--manifest ${{ env.MANIFEST_NAME }}"
 
       - name: Push to registry
