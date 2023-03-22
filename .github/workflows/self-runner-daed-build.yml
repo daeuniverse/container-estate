@@ -28,22 +28,32 @@ jobs:
         run: |
           buildah manifest create ${MANIFEST_NAME}
           
-      - name: Build multi-arch image
-        shell: bash
-        run: |
-          buildah bud \
-            --tag "${REGISTRY}/${USER}/${IMAGE_NAME}:${IMAGE_TAG}" \
-            --manifest ${MANIFEST_NAME} \
-            --file self-runner-daed-dockerfile \
-            --arch amd64 \
-            ${CONTEXT}
+      - name: build-image
+        uses: redhat-actions/buildah-build@v2
+        with:
+          image: self-runner-daed
+          tags: ${{ github.sha }}
+          context: .
+          containerfiles: self-runner-daed-dockerfile
+          platforms: linux/amd64,linux/arm64
+          extra-args: "--manifest ${{ env.MANIFEST_NAME }}"
+          
+#       - name: Build multi-arch image
+#         shell: bash
+#         run: |
+#           buildah bud \
+#             --tag "${REGISTRY}/${USER}/${IMAGE_NAME}:${IMAGE_TAG}" \
+#             --manifest ${MANIFEST_NAME} \
+#             --file self-runner-daed-dockerfile \
+#             --arch amd64 \
+#             ${CONTEXT}
             
-          buildah bud \
-            --tag "${REGISTRY}/${USER}/${IMAGE_NAME}:${IMAGE_TAG}" \
-            --manifest ${MANIFEST_NAME} \
-            --file self-runner-daed-dockerfile \
-            --arch arm64 \
-            ${CONTEXT}
+#           buildah bud \
+#             --tag "${REGISTRY}/${USER}/${IMAGE_NAME}:${IMAGE_TAG}" \
+#             --manifest ${MANIFEST_NAME} \
+#             --file self-runner-daed-dockerfile \
+#             --arch arm64 \
+#             ${CONTEXT}
             
       - name: Push to registry
         shell: bash
