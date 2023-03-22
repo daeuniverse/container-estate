@@ -21,8 +21,8 @@ jobs:
       - name: Install Buildah
         shell: bash
         run: |
-          sudo apt update -y
-          sudo apt install buildah -y
+          sudo apt-get update -y
+          sudo apt-get install buildah -y
       - name: Buildah build
         uses: redhat-actions/buildah-build@v2
         with:
