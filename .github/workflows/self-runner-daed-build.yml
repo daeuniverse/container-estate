@@ -45,11 +45,12 @@ jobs:
             --arch arm64 \
             ${CONTEXT}
             
-#       - name: Push to registry
-#         shell: bash
-#         run: |
-#           buildah manifest push --all \
-#             ${MANIFEST_NAME} \
-#             "docker://${REGISTRY}/${USER}/${IMAGE_NAME}:${IMAGE_TAG}"
+      - name: Push to registry
+        shell: bash
+        run: |
+          buildah manifest push --all \
+            --creds=$USER:${{ secrets.GITHUB_TOKEN }} \
+            ${MANIFEST_NAME} \
+            "docker://${REGISTRY}/${USER}/${IMAGE_NAME}:${IMAGE_TAG}"
 
 
