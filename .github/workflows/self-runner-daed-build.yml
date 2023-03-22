@@ -15,7 +15,8 @@ jobs:
           sudo cat << EOF | sudo tee -a /etc/containers/registries.conf
           unqualified-search-registries=["docker.io"]
           EOF
-      - name: build multi-arch images
+          
+      - name: build-image
         uses: redhat-actions/buildah-build@v2
         with:
           image: self-runner-daed
@@ -23,3 +24,19 @@ jobs:
           context: .
           containerfiles: self-runner-daed-dockerfile
           platforms: linux/amd64,linux/arm64
+          
+      - name: push
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          image: ${{ steps.build-image.outputs.image }}
+          tags: ${{ steps.build-image.outputs.tags }}
+          registry: ghcr.io/daeuniverse
+          username: ${{ env.REGISTRY_USER }}
+          password: ${{ env.REGISTRY_PASSWORD }}
+          extra-args: |
+            --disable-content-trust
+            
+      - name: Echo outputs
+        run: |
+          echo "${{ toJSON(steps.push.outputs) }}"
+
