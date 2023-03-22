@@ -24,6 +24,12 @@ jobs:
           unqualified-search-registries=["docker.io"]
           EOF
           
+      - name: Verify variables
+        shell: bash
+        run: |
+          echo ${USER}
+          echo ${REPO_NAME}
+          
       - name: Create multi-architecture manifest
         shell: bash
         run: |
@@ -42,7 +48,10 @@ jobs:
             
       - name: Push to registry
         shell: bash
-        run: |      
+        run: |
+          buildah tag ${{ steps.build-image.outputs.image }}:${{ steps.build-image.outputs.tags }} \
+            ${REGISTRY}/${USER}/${REPO_NAME}/${IMAGE_NAME}:${IMAGE_TAG}
+          
           buildah manifest push --all \
             --creds=$USER:${{ secrets.TOKEN }} \
             ${MANIFEST_NAME} \
