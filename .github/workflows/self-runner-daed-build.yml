@@ -9,7 +9,8 @@ jobs:
       MANIFEST_NAME: "multiarch-build"
       CONTEXT: "."
       REGISTRY: "ghcr.io"
-      USER: "daeuniverse"
+      REPO_NAME: "{{ github.repository }}"
+      USER: "{{ github.repository_owner }}"
       IMAGE_NAME: "self-runner-daed"
       IMAGE_TAG: "v0.1.1"
     steps:
@@ -28,7 +29,8 @@ jobs:
         run: |
           buildah manifest create ${MANIFEST_NAME}
           
-      - name: build-image
+      - name: Build multi-arch image
+        id: build-image
         uses: redhat-actions/buildah-build@v2
         with:
           image: self-runner-daed
@@ -42,14 +44,14 @@ jobs:
 #         shell: bash
 #         run: |
 #           buildah bud \
-#             --tag "${REGISTRY}/${USER}/${IMAGE_NAME}:${IMAGE_TAG}" \
+#             --tag "${REGISTRY}/${USER}/${REPO}/${IMAGE_NAME}:${IMAGE_TAG}" \
 #             --manifest ${MANIFEST_NAME} \
 #             --file self-runner-daed-dockerfile \
 #             --arch amd64 \
 #             ${CONTEXT}
             
 #           buildah bud \
-#             --tag "${REGISTRY}/${USER}/${IMAGE_NAME}:${IMAGE_TAG}" \
+#             --tag "${REGISTRY}/${USER}/${REPO}/${IMAGE_NAME}:${IMAGE_TAG}" \
 #             --manifest ${MANIFEST_NAME} \
 #             --file self-runner-daed-dockerfile \
 #             --arch arm64 \
@@ -61,6 +63,6 @@ jobs:
           buildah manifest push --all \
             --creds=$USER:${{ secrets.TOKEN }} \
             ${MANIFEST_NAME} \
-            "docker://${REGISTRY}/${USER}/${IMAGE_NAME}:${IMAGE_TAG}"
+            "docker://${REGISTRY}/${USER}/${REPO}/${IMAGE_NAME}:${IMAGE_TAG}"
 
 
