@@ -4,7 +4,8 @@ on:
   workflow_dispatch:
 jobs:
   build-runner:
-    runs-on: ubuntu-latest
+#     runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@master
       - name: Kaniko build
