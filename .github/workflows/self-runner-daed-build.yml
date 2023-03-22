@@ -18,6 +18,11 @@ jobs:
 #           cache: true
 #           cache_registry: cache
 #           extra_args: "--custom-platform ${{ matrix.platform }}"
+      - name: Install Buildah
+        shell: bash
+        run: |
+          sudo apt update -y
+          sudo apt install buildah -y
       - name: Buildah build
         uses: redhat-actions/buildah-build@v2
         with:
