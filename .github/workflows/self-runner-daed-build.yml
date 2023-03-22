@@ -43,6 +43,9 @@ jobs:
       - name: Push to registry
         shell: bash
         run: |
+          buildah tag ${{ steps.build-image.outputs.image }}:${{ steps.build-image.outputs.tags }} \
+            ${REGISTRY}/${USER}/${REPO}/${IMAGE_NAME}:${IMAGE_TAG}
+            
           buildah manifest push --all \
             --creds=$USER:${{ secrets.TOKEN }} \
             ${MANIFEST_NAME} \
