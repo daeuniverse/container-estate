@@ -8,10 +8,10 @@ jobs:
     env:
       MANIFEST_NAME: "buildah-runner"
       CONTEXT: "."
+      DOCKER_FILE: "buildah-runner-dockerfile"
       REGISTRY: "ghcr.io"
       REPO_NAME: "${{ github.repository }}"
       USER: "${{ github.repository_owner }}"
-      DOCKER_FILE: "buildah-runner-dockerfile"
       IMAGE_NAME: "buildah-runner"
       IMAGE_TAG: "v0.1.1"
     steps:
