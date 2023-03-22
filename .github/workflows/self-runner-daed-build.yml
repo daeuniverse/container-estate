@@ -18,3 +18,4 @@ jobs:
           tag: latest
           cache: true
           cache_registry: cache
+          extra_args: "--platforms linux/amd64,linux/arm64"
