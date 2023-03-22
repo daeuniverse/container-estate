@@ -40,12 +40,20 @@ jobs:
           platforms: linux/amd64,linux/arm64
           extra-args: "--manifest ${{ env.MANIFEST_NAME }}"
             
+#       - name: Push to registry
+#         shell: bash
+#         run: |
+#           buildah tag ${{ steps.build-image.outputs.image }}:${{ steps.build-image.outputs.tags }} \
+#             ${REGISTRY}/${REPO_NAME}/${IMAGE_NAME}:${IMAGE_TAG}
+          
+#           buildah manifest push --all \
+#             --creds=$USER:${{ secrets.TOKEN }} \
+#             ${MANIFEST_NAME} \
+#             "docker://${REGISTRY}/${REPO_NAME}/${IMAGE_NAME}:${IMAGE_TAG}"
+
       - name: Push to registry
         shell: bash
-        run: |
-          buildah tag ${{ steps.build-image.outputs.image }}:${{ steps.build-image.outputs.tags }} \
-            ${REGISTRY}/${REPO_NAME}/${IMAGE_NAME}:${IMAGE_TAG}
-          
+        run: |          
           buildah manifest push --all \
             --creds=$USER:${{ secrets.TOKEN }} \
             ${MANIFEST_NAME} \
