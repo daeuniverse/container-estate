@@ -2,6 +2,8 @@ FROM summerwind/actions-runner:ubuntu-22.04
 
 RUN sudo apt update -y && \
     sudo apt install buildah -y
+    
+RUN echo "unqualified-search-registries=["docker.io"]" | sudo tee -a /etc/containers/registries.conf
 
 RUN sudo apt-get clean autoclean && \
     sudo apt-get autoremove -y && \
