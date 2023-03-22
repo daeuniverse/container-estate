@@ -48,3 +48,8 @@ jobs:
             --creds=$USER:${{ secrets.TOKEN }} \
             ${MANIFEST_NAME} \
             "docker://${REGISTRY}/${REPO_NAME}/${IMAGE_NAME}:${IMAGE_TAG}"
+            
+          buildah manifest push --all \
+            --creds=$USER:${{ secrets.TOKEN }} \
+            ${MANIFEST_NAME} \
+            "docker://${REGISTRY}/${REPO_NAME}/${IMAGE_NAME}:latest"
