@@ -1,5 +1,5 @@
 ---
-name: Kaniko build for self-runner-daed
+name: Buildah build for self-runner-daed
 on:
   workflow_dispatch:
 jobs:
