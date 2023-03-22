@@ -4,20 +4,25 @@ on:
   workflow_dispatch:
 jobs:
   build-runner:
-    strategy:
-      matrix:
-        platform: [linux/arm64,linux/amd64]
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@master
-      - name: Kaniko build
-        uses: aevea/action-kaniko@master
+#       - name: Kaniko build
+#         uses: aevea/action-kaniko@master
+#         with:
+#           registry: ghcr.io
+#           password: ${{ secrets.TOKEN }}
+#           image: self-runner-daed
+#           build_file: self-runner-daed-dockerfile
+#           tag: latest
+#           cache: true
+#           cache_registry: cache
+#           extra_args: "--custom-platform ${{ matrix.platform }}"
+      - name: Buildah build
+        uses: redhat-actions/buildah-build@v2
         with:
-          registry: ghcr.io
-          password: ${{ secrets.TOKEN }}
           image: self-runner-daed
-          build_file: self-runner-daed-dockerfile
-          tag: latest
-          cache: true
-          cache_registry: cache
-          extra_args: "--custom-platform ${{ matrix.platform }}"
+          tags: v1 ${{ github.sha }}
+          context: .
+          containerfiles: self-runner-daed-dockerfile
+          archs: linux/arm64,linux/amd64
