@@ -34,7 +34,7 @@ jobs:
         uses: redhat-actions/buildah-build@v2
         with:
           image: self-runner-daed
-          tags: ${{ github.sha }}
+          tags: latest ${{ github.sha }}
           context: .
           containerfiles: self-runner-daed-dockerfile
           platforms: linux/amd64,linux/arm64
