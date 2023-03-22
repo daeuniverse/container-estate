@@ -34,12 +34,14 @@ jobs:
           buildah bud \
             --tag "${REGISTRY}/${USER}/${IMAGE_NAME}:${IMAGE_TAG}" \
             --manifest ${MANIFEST_NAME} \
+            --file self-runner-daed-dockerfile \
             --arch amd64 \
             ${CONTEXT}
             
           buildah bud \
             --tag "${REGISTRY}/${USER}/${IMAGE_NAME}:${IMAGE_TAG}" \
             --manifest ${MANIFEST_NAME} \
+            --file self-runner-daed-dockerfile \
             --arch arm64 \
             ${CONTEXT}
             
