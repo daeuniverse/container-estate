@@ -13,7 +13,8 @@ jobs:
       - name: Kaniko build
         uses: aevea/action-kaniko@master
         with:
-          registry: ghcr.io
+          registry: quay.io
+          username: daeuniverse
           password: ${{ secrets.TOKEN }}
           image: self-runner-daed
           build_file: self-runner-daed-dockerfile
