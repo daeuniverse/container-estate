@@ -1,0 +1,50 @@
+---
+name: Build buildah runner
+on:
+  workflow_dispatch:
+jobs:
+  build-runner:
+    runs-on: self-hosted
+    env:
+      MANIFEST_NAME: "buildah-runner"
+      CONTEXT: "."
+      REGISTRY: "ghcr.io"
+      REPO_NAME: "${{ github.repository }}"
+      USER: "${{ github.repository_owner }}"
+      DOCKER_FILE: "buildah-runner-dockerfile"
+      IMAGE_NAME: "buildah-runner"
+      IMAGE_TAG: "v0.1.1"
+    steps:
+      - uses: actions/checkout@master        
+      - name: Install Buildah
+        shell: bash
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install buildah -y
+          sudo cat << EOF | sudo tee -a /etc/containers/registries.conf
+          unqualified-search-registries=["docker.io"]
+          EOF
+          
+      - name: Create multi-architecture manifest
+        shell: bash
+        run: |
+          buildah manifest create ${MANIFEST_NAME}
+          
+      - name: Build multi-arch image
+        id: build-image
+        uses: redhat-actions/buildah-build@v2
+        with:
+          image: self-runner-daed
+          tags: latest ${{ github.sha }}
+          context: .
+          containerfiles: ${{ env.DOCKER_FILE }}
+          platforms: linux/amd64,linux/arm64
+          extra-args: "--manifest ${{ env.MANIFEST_NAME }}"
+
+      - name: Push to registry
+        shell: bash
+        run: |          
+          buildah manifest push --all \
+            --creds=$USER:${{ secrets.TOKEN }} \
+            ${MANIFEST_NAME} \
+            "docker://${REGISTRY}/${REPO_NAME}/${IMAGE_NAME}:${IMAGE_TAG}"
