@@ -6,11 +6,9 @@ jobs:
   build-runner:
     runs-on: self-hosted
     env:
-      CONTEXT: "."
       DOCKER_FILE: "buildah-runner-dockerfile"
       REGISTRY: "ghcr.io"
-      REPO_NAME: "${{ github.repository }}"
-      USER: "${{ github.repository_owner }}"
+      USER: "daeuniverse"
       IMAGE_NAME: "buildah-runner"
       IMAGE_TAG: "latest"
     steps:
