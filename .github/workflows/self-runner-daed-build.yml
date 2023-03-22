@@ -13,10 +13,9 @@ jobs:
       - name: Kaniko build
         uses: aevea/action-kaniko@master
         with:
-          registry: quay.io
-          username: daeuniverse
+          registry: ghcr.io
           password: ${{ secrets.TOKEN }}
-          image: daeuniverse/self-runner-daed
+          image: self-runner-daed
           build_file: self-runner-daed-dockerfile
           tag: latest
           cache: true
