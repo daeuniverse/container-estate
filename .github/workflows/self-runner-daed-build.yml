@@ -9,8 +9,8 @@ jobs:
       MANIFEST_NAME: "multiarch-build"
       CONTEXT: "."
       REGISTRY: "ghcr.io"
-      REPO_NAME: "{{ github.repository }}"
-      USER: "{{ github.repository_owner }}"
+      REPO_NAME: "${{ github.repository }}"
+      USER: "${{ github.repository_owner }}"
       IMAGE_NAME: "self-runner-daed"
       IMAGE_TAG: "v0.1.1"
     steps:
