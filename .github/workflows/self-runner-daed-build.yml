@@ -33,4 +33,4 @@ jobs:
           tags: v1 ${{ github.sha }}
           context: .
           containerfiles: self-runner-daed-dockerfile
-          archs: linux/amd64
+#         archs: linux/amd64
