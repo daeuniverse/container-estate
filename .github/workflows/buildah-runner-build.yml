@@ -20,7 +20,7 @@ jobs:
           username: ${{ env.USER }}
           password: ${{ secrets.TOKEN }}
           image: ${{ env.IMAGE_NAME }}
-          build_file: ${{ env.DOCKER_FILE }}}
+          build_file: ${{ env.DOCKER_FILE }}
           tag: ${{ env.IMAGE_TAG }}
           cache: true
           cache_registry: cache
