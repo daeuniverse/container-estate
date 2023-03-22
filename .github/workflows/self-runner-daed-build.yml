@@ -16,7 +16,7 @@ jobs:
           registry: quay.io
           username: daeuniverse
           password: ${{ secrets.TOKEN }}
-          image: self-runner-daed
+          image: daeuniverse/self-runner-daed
           build_file: self-runner-daed-dockerfile
           tag: latest
           cache: true
