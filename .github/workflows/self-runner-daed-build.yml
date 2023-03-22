@@ -49,7 +49,7 @@ jobs:
         shell: bash
         run: |
           buildah manifest push --all \
-            --creds=$USER:${{ secrets.GITHUB_TOKEN }} \
+            --creds=$USER:${{ secrets.TOKEN }} \
             ${MANIFEST_NAME} \
             "docker://${REGISTRY}/${USER}/${IMAGE_NAME}:${IMAGE_TAG}"
 
