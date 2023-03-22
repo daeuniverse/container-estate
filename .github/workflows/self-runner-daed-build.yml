@@ -8,6 +8,7 @@ jobs:
     env:
       MANIFEST_NAME: "multiarch-build"
       CONTEXT: "."
+      DOCKER_FILE: "self-runner-daed-dockerfile"
       REGISTRY: "ghcr.io"
       REPO_NAME: "${{ github.repository }}"
       USER: "${{ github.repository_owner }}"
@@ -36,7 +37,7 @@ jobs:
           image: self-runner-daed
           tags: latest ${{ github.sha }}
           context: .
-          containerfiles: self-runner-daed-dockerfile
+          containerfiles: ${{ env.DOCKER_FILE }}
           platforms: linux/amd64,linux/arm64
           extra-args: "--manifest ${{ env.MANIFEST_NAME }}"
 
@@ -47,3 +48,8 @@ jobs:
             --creds=$USER:${{ secrets.TOKEN }} \
             ${MANIFEST_NAME} \
             "docker://${REGISTRY}/${REPO_NAME}/${IMAGE_NAME}:${IMAGE_TAG}"
+            
+          buildah manifest push --all \
+            --creds=$USER:${{ secrets.TOKEN }} \
+            ${MANIFEST_NAME} \
+            "docker://${REGISTRY}/${REPO_NAME}/${IMAGE_NAME}:latest"
