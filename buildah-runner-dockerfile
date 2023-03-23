@@ -1,7 +1,7 @@
 FROM summerwind/actions-runner-dind:ubuntu-22.04
 
-LABEL SOURCE=https://github.com/actions/actions-runner-controller/blob/master/runner/actions-runner.ubuntu-22.04.dockerfile
-      MAINTAINER="yqlbu"
+LABEL source=https://github.com/actions/actions-runner-controller/blob/master/runner/actions-runner.ubuntu-22.04.dockerfile
+LABEL maintainer="@yqlbu"
 
 RUN sudo sed -i 's@//.*archive.ubuntu.com@//mirrors.ustc.edu.cn@g' /etc/apt/sources.list
 RUN sudo apt update -y && \
