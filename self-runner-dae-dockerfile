@@ -1,7 +1,13 @@
 FROM summerwind/actions-runner:ubuntu-22.04
 
+LABEL SOURCE_IMAGE=https://github.com/actions/actions-runner-controller/blob/master/runner/actions-runner.ubuntu-22.04.dockerfile
+      MAINTAINER=@yqlbu,@mzz2017
+
 RUN sudo apt-get update -y && \
-    sudo apt-get install curl llvm clang git make -y
+    sudo apt-get install -y --no-install-recommends && \
+    llvm \
+    clang \
+    make
 
 WORKDIR /tmp
 

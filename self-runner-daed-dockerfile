@@ -1,11 +1,12 @@
 FROM summerwind/actions-runner:ubuntu-22.04
 
-RUN sudo apt update -y && \
-    sudo apt install curl -y
+LABEL SOURCE_IMAGE=https://github.com/actions/actions-runner-controller/blob/master/runner/actions-runner.ubuntu-22.04.dockerfile
+      MAINTAINER=@yqlbu,@kuninsh
+
+RUN sudo apt update -y
 
 RUN curl -sL https://deb.nodesource.com/setup_19.x | sudo bash
 RUN sudo apt install nodejs -y
-RUN curl -fsSL https://get.pnpm.io/install.sh | sudo bash
 
 RUN sudo apt-get clean autoclean && \
     sudo apt-get autoremove -y && \

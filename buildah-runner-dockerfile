@@ -1,7 +1,11 @@
 FROM summerwind/actions-runner-dind:ubuntu-22.04
 
+LABEL SOURCE_IMAGE=https://github.com/actions/actions-runner-controller/blob/master/runner/actions-runner.ubuntu-22.04.dockerfile
+      MAINTAINER=@yqlbu
+
 RUN sudo apt update -y && \
-    sudo apt install buildah -y
+    sudo apt-get install -y --no-install-recommends && \
+    buildah
     
 RUN echo 'unqualified-search-registries = ["docker.io"]' | sudo tee -a /etc/containers/registries.conf
 
