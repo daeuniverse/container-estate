@@ -2,6 +2,7 @@ FROM summerwind/actions-runner:ubuntu-22.04
 
 LABEL source=https://github.com/actions/actions-runner-controller/blob/master/runner/actions-runner.ubuntu-22.04.dockerfile
 LABEL maintainer="@yqlbu,@mzz2017"
+LABEL golang="1.20.2"
 
 RUN sudo sed -i 's@//.*archive.ubuntu.com@//mirrors.ustc.edu.cn@g' /etc/apt/sources.list
 RUN sudo apt-get update -y && \
