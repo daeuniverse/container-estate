@@ -1,0 +1,26 @@
+---
+name: Build self-runner-dae
+on:
+  workflow_dispatch:
+jobs:
+  build-runner:
+    runs-on: self-hosted
+    env:
+      DOCKER_FILE: "buildah-runner-dockerfile"
+      REGISTRY: "ghcr.io"
+      USER: "daeuniverse"
+      IMAGE_NAME: "self-runner-dae"
+      IMAGE_TAG: "v1.0.0"
+    steps:
+      - uses: actions/checkout@master        
+      - name: Kaniko build
+        uses: aevea/action-kaniko@master
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ env.USER }}
+          password: ${{ secrets.TOKEN }}
+          image: ${{ env.IMAGE_NAME }}
+          build_file: ${{ env.DOCKER_FILE }}
+          tag: ${{ env.IMAGE_TAG }}
+          cache: true
+          cache_registry: cache
