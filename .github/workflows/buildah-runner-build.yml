@@ -10,7 +10,7 @@ jobs:
       REGISTRY: "ghcr.io"
       USER: "daeuniverse"
       IMAGE_NAME: "buildah-runner"
-      IMAGE_TAG: "latest"
+      IMAGE_TAG: "v1.0.0"
     steps:
       - uses: actions/checkout@master        
       - name: Kaniko build
