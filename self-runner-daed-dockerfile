@@ -3,6 +3,7 @@ FROM summerwind/actions-runner:ubuntu-22.04
 LABEL SOURCE_IMAGE=https://github.com/actions/actions-runner-controller/blob/master/runner/actions-runner.ubuntu-22.04.dockerfile
       MAINTAINER=@yqlbu,@kuninsh
 
+RUN sudo sed -i 's@//.*archive.ubuntu.com@//mirrors.ustc.edu.cn@g' /etc/apt/sources.list
 RUN sudo apt update -y
 
 RUN curl -sL https://deb.nodesource.com/setup_19.x | sudo bash
