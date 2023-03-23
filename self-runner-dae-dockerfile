@@ -12,8 +12,8 @@ RUN sudo apt-get update -y && \
 
 WORKDIR /tmp
 
-RUN curl -OL https://golang.org/dl/go1.16.7.linux-amd64.tar.gz && \
-    sudo tar -C /usr/local -xvf go1.16.7.linux-amd64.tar.gz && \
+RUN curl -OL https://golang.org/dl/go1.20.2.linux-amd64.tar.gz && \
+    sudo tar -C /usr/local -xvf go1.20.2.linux-amd64.tar.gz && \
     echo "export PATH=$PATH:/usr/local/go/bin" >> $HOME/.bashrc
 
 RUN sudo apt-get clean autoclean && \
