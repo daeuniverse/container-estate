@@ -6,7 +6,7 @@ jobs:
   build-runner:
     runs-on: self-hosted
     env:
-      DOCKER_FILE: "buildah-runner-dockerfile"
+      DOCKER_FILE: "self-runner-dae-dockerfile"
       REGISTRY: "ghcr.io"
       USER: "daeuniverse"
       IMAGE_NAME: "self-runner-dae"

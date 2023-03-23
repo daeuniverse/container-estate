@@ -1,46 +1,26 @@
 ---
-name: Buildah multi-arch build for self-runner-daed
+name: Build self-runner-daed
 on:
   workflow_dispatch:
 jobs:
   build-runner:
     runs-on: self-hosted
     env:
-      MANIFEST_NAME: "multiarch-build"
-      CONTEXT: "."
       DOCKER_FILE: "self-runner-daed-dockerfile"
       REGISTRY: "ghcr.io"
-      REPO_NAME: "${{ github.repository }}"
-      USER: "${{ github.repository_owner }}"
+      USER: "daeuniverse"
       IMAGE_NAME: "self-runner-daed"
-      IMAGE_TAG: "v0.1.1"
+      IMAGE_TAG: "v1.0.0"
     steps:
-      - uses: actions/checkout@master
-      - name: Create multi-architecture manifest
-        shell: bash
-        run: |
-          buildah manifest create ${MANIFEST_NAME}
-          
-      - name: Build multi-arch image
-        id: build-image
-        uses: redhat-actions/buildah-build@v2
+      - uses: actions/checkout@master        
+      - name: Kaniko build
+        uses: aevea/action-kaniko@master
         with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ env.USER }}
+          password: ${{ secrets.TOKEN }}
           image: ${{ env.IMAGE_NAME }}
-          tags: latest ${{ github.sha }}
-          context: .
-          containerfiles: ${{ env.DOCKER_FILE }}
-          platforms: linux/amd64,linux/arm64
-          extra-args: "--manifest ${{ env.MANIFEST_NAME }}"
-
-      - name: Push to registry
-        shell: bash
-        run: |          
-          buildah manifest push --all \
-            --creds=$USER:${{ secrets.TOKEN }} \
-            ${MANIFEST_NAME} \
-            "docker://${REGISTRY}/${REPO_NAME}/${IMAGE_NAME}:${IMAGE_TAG}"
-            
-          buildah manifest push --all \
-            --creds=$USER:${{ secrets.TOKEN }} \
-            ${MANIFEST_NAME} \
-            "docker://${REGISTRY}/${REPO_NAME}/${IMAGE_NAME}:latest"
+          build_file: ${{ env.DOCKER_FILE }}
+          tag: ${{ env.IMAGE_TAG }}
+          cache: true
+          cache_registry: cache
