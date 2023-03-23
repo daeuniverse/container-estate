@@ -15,16 +15,7 @@ jobs:
       IMAGE_NAME: "self-runner-daed"
       IMAGE_TAG: "v0.1.1"
     steps:
-      - uses: actions/checkout@master        
-#       - name: Install Buildah
-#         shell: bash
-#         run: |
-#           sudo apt-get update -y
-#           sudo apt-get install buildah -y
-#           sudo cat << EOF | sudo tee -a /etc/containers/registries.conf
-#           unqualified-search-registries=["docker.io"]
-#           EOF
-          
+      - uses: actions/checkout@master
       - name: Create multi-architecture manifest
         shell: bash
         run: |
