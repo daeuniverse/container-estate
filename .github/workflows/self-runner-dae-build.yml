@@ -10,7 +10,7 @@ jobs:
       REGISTRY: "ghcr.io"
       USER: "daeuniverse"
       IMAGE_NAME: "self-runner-dae"
-      IMAGE_TAG: "v1.0.0"
+      IMAGE_TAG: "v1.0.1"
     steps:
       - uses: actions/checkout@master        
       - name: Kaniko build
