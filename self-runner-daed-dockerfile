@@ -5,8 +5,9 @@ RUN sudo apt update -y && \
 
 RUN curl -sL https://deb.nodesource.com/setup_19.x | sudo bash
 RUN sudo apt install nodejs -y
-RUN curl -fsSL https://get.pnpm.io/install.sh | sh -
+RUN curl -fsSL https://get.pnpm.io/install.sh | sudo bash
 
 RUN sudo apt-get clean autoclean && \
     sudo apt-get autoremove -y && \
     sudo rm -rf /var/lib/{apt,dpkg,cache,log}/
+
