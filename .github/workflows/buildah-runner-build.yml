@@ -28,7 +28,7 @@ jobs:
           build_file: ${{ env.DOCKER_FILE }}
           tag: ${{ steps.export_commit_sha.outputs.sha_short }}
           cache: true
-          cache_registry: cache
+          cache_registry: ${{ env.USER }}/cache
 
       - name: Echo image uri
         run: |
