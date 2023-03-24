@@ -7,7 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DOCKER_FILE: "self-runner-dae-dockerfile"
-      REGISTRY: "ghcr.io"
       USER: "daeuniverse"
       IMAGE_NAME: "self-runner-dae"
       IMAGE_TAG: "golang-1.20.2"
@@ -23,7 +22,7 @@ jobs:
         id: kaniko_build
         uses: aevea/action-kaniko@master
         with:
-          registry: ${{ env.REGISTRY }}
+          registry: ghcr.io
           username: ${{ env.USER }}
           password: ${{ secrets.TOKEN }}
           image: ${{ env.IMAGE_NAME }}
@@ -32,6 +31,20 @@ jobs:
           cache: true
           cache_registry: cache
 
+      - name: Kaniko build - quay.io
+        id: kaniko_build
+        uses: aevea/action-kaniko@master
+        with:
+          registry: quay.io
+          username: ${{ secrets.REGISTRY_USER }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+          image: ${{ env.IMAGE_NAME }}
+          build_file: ${{ env.DOCKER_FILE }}
+          tag: ${{ env.IMAGE_TAG }}-${{ steps.export_commit_sha.outputs.sha_short }}
+          cache: true
+          cache_registry: cache
+
       - name: Echo image uri
         run: |
-          echo "ImageURI: ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}-${{ steps.export_commit_sha.outputs.sha_short }}"
+          echo "ImageURI (ghcr.io): ghcr.io/${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}-${{ steps.export_commit_sha.outputs.sha_short }}"
+          echo "ImageURI (quay.io): quay.io/${{ env.USER }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}-${{ steps.export_commit_sha.outputs.sha_short }}"
