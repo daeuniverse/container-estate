@@ -28,3 +28,7 @@ jobs:
           tag: ${{ steps.export_commit_sha.outputs.sha_short }}
           cache: true
           cache_registry: cache
+
+      - name: Echo image uri
+        run: |
+          echo "ImageURI: ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ steps.export_commit_sha.outputs.sha_short }}"
