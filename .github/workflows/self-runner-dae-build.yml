@@ -15,10 +15,8 @@ jobs:
       - name: Get HEAD git sha
         id: export_commit_sha
         run: |
-          echo "{sha_long}={{{ github.sha }}}" >> $GITHUB_OUTPUT
-          echo "{sha_short}={$(echo ${{ github.sha }} | cut -c1-6)}" >> $GITHUB_OUTPUT
-            # echo "::set-output name=sha_long::${{ github.sha }}"
-            # echo "::set-output name=sha_short::$(echo ${{ github.sha }} | cut -c1-6)"
+          echo "LONG_SHA={{ github.sha }}" >> GITHUB_ENV
+          echo "SHORT_SHA=`echo ${{ github.sha }} | cut -c1-6`" >> GITHUB_ENV
 
       - name: Kaniko build - ghcr.io
         id: ghcr_build
@@ -29,7 +27,7 @@ jobs:
           password: ${{ secrets.TOKEN }}
           image: ${{ env.IMAGE_NAME }}
           build_file: ${{ env.DOCKER_FILE }}
-          tag: ${{ env.IMAGE_TAG }}-${{ steps.export_commit_sha.outputs.sha_short }}
+          tag: ${{ env.IMAGE_TAG }}-${{ env.SHORT_SHA }}
           cache: true
           cache_registry: cache
 
@@ -42,11 +40,11 @@ jobs:
           password: ${{ secrets.REGISTRY_PASSWORD }}
           image: ${{ env.USER }}/${{ env.IMAGE_NAME }}
           build_file: ${{ env.DOCKER_FILE }}
-          tag: ${{ env.IMAGE_TAG }}-${{ steps.export_commit_sha.outputs.sha_short }}
+          tag: ${{ env.IMAGE_TAG }}-${{ env.SHORT_SHA }}
           cache: true
           cache_registry: cache
 
       - name: Echo image uri
         run: |
-          echo "ImageURI (ghcr.io): ghcr.io/${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}-${{ steps.export_commit_sha.outputs.sha_short }}"
-          echo "ImageURI (quay.io): quay.io/${{ env.USER }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}-${{ steps.export_commit_sha.outputs.sha_short }}"
+          echo "ImageURI (ghcr.io): ghcr.io/${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}-${{ env.SHORT_SHA }}"
+          echo "ImageURI (quay.io): quay.io/${{ env.USER }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}-${{ env.SHORT_SHA }}"
