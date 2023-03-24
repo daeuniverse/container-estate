@@ -22,5 +22,8 @@ RUN sudo apt-get clean autoclean && \
     sudo rm -rf /var/lib/{apt,dpkg,cache,log}/ && \
     sudo rm -rf /tmp/*
 
+RUN ls /usr/local/go
+RUN go version
+
 USER runner
 WORKDIR /home/runner
