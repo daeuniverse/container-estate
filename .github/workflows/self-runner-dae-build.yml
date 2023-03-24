@@ -20,7 +20,7 @@ jobs:
             # echo "::set-output name=sha_long::${{ github.sha }}"
             # echo "::set-output name=sha_short::$(echo ${{ github.sha }} | cut -c1-6)"
 
-      - name: Kaniko build
+      - name: Kaniko build - ghcr.io
         id: ghcr_build
         uses: aevea/action-kaniko@master
         with:
@@ -40,7 +40,7 @@ jobs:
           registry: quay.io
           username: ${{ env.USER }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
-          image: ${{ env.IMAGE_NAME }}
+          image: ${{ env.USER }}/${{ env.IMAGE_NAME }}
           build_file: ${{ env.DOCKER_FILE }}
           tag: ${{ env.IMAGE_TAG }}-${{ steps.export_commit_sha.outputs.sha_short }}
           cache: true
