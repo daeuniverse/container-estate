@@ -15,8 +15,8 @@ jobs:
       - name: Get HEAD git sha
         id: export_commit_sha
         run: |
-          echo "sha_long=${{ github.sha }}" >> GITHUB_OUTPUT
-          echo "sha_short=$(echo ${{ github.sha }} | cut -c1-6)" >> GITHUB_OUTPUT
+          echo "sha_long=${{ github.sha }}" >> $GITHUB_OUTPUT
+          echo "sha_short=$(echo ${{ github.sha }} | cut -c1-6)" >> $GITHUB_OUTPUT
 
       - name: Kaniko build - ghcr.io
         id: ghcr_build
