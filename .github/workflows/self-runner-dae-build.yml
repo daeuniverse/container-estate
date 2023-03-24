@@ -27,7 +27,7 @@ jobs:
           password: ${{ secrets.TOKEN }}
           image: ${{ env.IMAGE_NAME }}
           build_file: ${{ env.DOCKER_FILE }}
-          tag: ${{ env.IMAGE_TAG }}-${SHORT_SHA}
+          tag: ${{ env.IMAGE_TAG }}-${{ env.SHORT_SHA }}
           cache: true
           cache_registry: cache
 
@@ -40,7 +40,7 @@ jobs:
           password: ${{ secrets.QUAY_PASS }}
           image: ${{ env.USER }}/${{ env.IMAGE_NAME }}
           build_file: ${{ env.DOCKER_FILE }}
-          tag: ${{ env.IMAGE_TAG }}-${SHORT_SHA}
+          tag: ${{ env.IMAGE_TAG }}-${{ env.SHORT_SHA }}
           cache: true
           cache_registry: cache
 
