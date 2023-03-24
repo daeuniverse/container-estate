@@ -9,7 +9,7 @@ jobs:
       DOCKER_FILE: "self-runner-daed-dockerfile"
       USER: "daeuniverse"
       IMAGE_NAME: "self-runner-daed"
-      IMAGE_TAG: nodejs-19.8.1"
+      IMAGE_TAG: nodejs-19.8.1
     steps:
       - uses: actions/checkout@master
       - name: Get HEAD git sha
