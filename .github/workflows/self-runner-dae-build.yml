@@ -36,7 +36,7 @@ jobs:
         uses: aevea/action-kaniko@master
         with:
           registry: quay.io
-          username: ${{ secrets.REGISTRY_USER }}
+          username: ${{ env.USER }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
           image: ${{ env.IMAGE_NAME }}
           build_file: ${{ env.DOCKER_FILE }}
