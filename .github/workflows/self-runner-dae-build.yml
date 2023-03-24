@@ -11,7 +11,7 @@ jobs:
       IMAGE_NAME: "self-runner-dae"
       IMAGE_TAG: "golang-1.20.2"
     steps:
-      - uses: actions/checkout@master        
+      - uses: actions/checkout@master
       - name: Get HEAD git sha
         id: export_commit_sha
         run: |
