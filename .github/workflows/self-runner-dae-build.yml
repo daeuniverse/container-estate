@@ -20,6 +20,7 @@ jobs:
           echo "::set-output name=sha_short::$(echo ${{ github.sha }} | cut -c1-6)"
 
       - name: Kaniko build
+        id: kaniko_build
         uses: aevea/action-kaniko@master
         with:
           registry: ${{ env.REGISTRY }}
@@ -30,3 +31,7 @@ jobs:
           tag: ${{ env.IMAGE_TAG }}-${{ steps.export_commit_sha.outputs.sha_short }}
           cache: true
           cache_registry: cache
+
+      - name: Echo image uri
+        run: |
+          echo "ImageURI: ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}-${{ steps.export_commit_sha.outputs.sha_short }}"
