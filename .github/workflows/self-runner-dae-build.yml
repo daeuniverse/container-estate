@@ -19,7 +19,7 @@ jobs:
           echo "::set-output name=sha_short::$(echo ${{ github.sha }} | cut -c1-6)"
 
       - name: Kaniko build
-        id: kaniko_build
+        id: ghcr_build
         uses: aevea/action-kaniko@master
         with:
           registry: ghcr.io
@@ -32,7 +32,7 @@ jobs:
           cache_registry: cache
 
       - name: Kaniko build - quay.io
-        id: kaniko_build
+        id: quay_build
         uses: aevea/action-kaniko@master
         with:
           registry: quay.io
