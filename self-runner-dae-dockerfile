@@ -24,8 +24,5 @@ RUN sudo apt-get clean autoclean && \
 
 ENV PATH /usr/local/go/bin:$PATH
 
-RUN ls /usr/local/go
-RUN go version
-
 USER runner
 WORKDIR /home/runner
