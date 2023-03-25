@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 jobs:
   build-runner:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     env:
       DOCKER_FILE: "self-runner-dae-dockerfile"
       USER: "daeuniverse"
