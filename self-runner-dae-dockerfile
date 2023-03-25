@@ -17,13 +17,12 @@ WORKDIR /tmp
 RUN curl -OL https://go.dev/dl/go1.20.2.linux-amd64.tar.gz && \
     sudo tar -C /usr/local -xvf go1.20.2.linux-amd64.tar.gz
 
-
 RUN sudo apt-get clean autoclean && \
     sudo apt-get autoremove -y && \
     sudo rm -rf /var/lib/{apt,dpkg,cache,log}/ && \
     sudo rm -rf /tmp/*
 
-ENV PATH /usr/local/go/bin:$PATH
+ENV PATH=$PATH:/usr/local/go/bin
 
 USER runner
 WORKDIR /home/runner
