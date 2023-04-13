@@ -24,15 +24,13 @@ jobs:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: markdown
           message: |
-            🔨 ${{ github.actor }} pushed a new commit: ${{ steps.export_commit_sha.outputs.sha_short }}
+            🔨 ${{ github.actor }} pushed a new commit: ${{ steps.export_commit_sha.outputs.sha_short }} to [${{ github.repository }}](https://github.com/daeuniverse/container-estate)
             
             Commit message: ${{ github.event.commits[0].message }}
             
-            Repository: [${{ github.repository }}](https://github.com/daeuniverse/container-estate)
+            Build Status: [#${{ github.run_number }}](https://github.com/daeuniverse/container-estate/actions/runs/${{ github.run_id }})
             
-            Build: [${{ github.run_number }}](https://github.com/daeuniverse/container-estate/actions/runs/${{ github.run_id }})
-            
-            See changes: [${{ steps.export_commit_sha.outputs.sha_short }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
+            Changes: [${{ steps.export_commit_sha.outputs.sha_short }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
 
       - name: Kaniko build - quay.io
         id: quay_build
@@ -50,3 +48,16 @@ jobs:
       - name: Echo image uri
         run: |
           echo "ImageURI (quay.io): quay.io/${{ env.USER }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}-${{ env.SHORT_SHA }}-${{ github.run_number }}"
+          
+      - name: Send telegram message on push
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          format: markdown
+          message: |
+            🏗 Build #${{ github.run_number }} succeeded!
+            
+            Image URI: 📦 quay.io/${{ env.USER }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}-${{ env.SHORT_SHA }}-${{ github.run_number }}
+            
+            Build Detail: [${{ github.run_number }}](https://github.com/daeuniverse/container-estate/actions/runs/${{ github.run_id }})
