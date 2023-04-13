@@ -54,7 +54,7 @@ jobs:
     with:
       USER: ${{ needs.build-runner.outputs.user }}
       IMAGE_NAME: ${{ needs.build-runner.outputs.image_name }}
-      SHA_SHORT: ${{ env.SHA_SHORT }}
+      SHA_SHORT: ${{ needs.pre-build.outputs.git_sha_short }}
     secrets:
       TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
       TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
