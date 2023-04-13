@@ -30,9 +30,9 @@ jobs:
             
             Repository: [${{ github.repository }}](https://github.com/daeuniverse/container-estate)
             
-            Build: [${{ github.run_number }}](https://github.com/daeuniverse/container-estate/actions/run/${{ github.run_id }})
+            Build: [${{ github.run_number }}](https://github.com/daeuniverse/container-estate/actions/runs/${{ github.run_id }})
             
-            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
+            See changes: [${{ steps.export_commit_sha.outputs.sha_short }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
 
       - name: Kaniko build - quay.io
         id: quay_build
