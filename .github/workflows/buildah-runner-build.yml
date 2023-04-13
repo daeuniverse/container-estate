@@ -23,10 +23,8 @@ jobs:
     needs: [pre-build]
     env:
       DOCKER_FILE: "buildah-runner-dockerfile"
-      USER: ${{ github.repository_owner }}
       IMAGE_NAME: "buildah-runner"
     outputs:
-      user: ${{ env.USER }}
       image_name: ${{ env.IMAGE_NAME }}
     steps:
       - uses: actions/checkout@master
@@ -35,24 +33,23 @@ jobs:
         uses: aevea/action-kaniko@master
         with:
           registry: quay.io
-          username: ${{ env.USER }}
+          username: ${{ github.repository_owner }}
           password: ${{ secrets.QUAY_PASS }}
-          image: ${{ env.USER }}/${{ env.IMAGE_NAME }}
+          image: ${{ github.repository_owner }}/${{ env.IMAGE_NAME }}
           build_file: ${{ env.DOCKER_FILE }}
           tag: ${{ needs.pre-build.outputs.git_sha_short }}-${{ github.run_number }}
           cache: true
-          cache_registry: quay.io/${{ env.USER }}/cache
+          cache_registry: quay.io/${{ github.repository_owner }}/cache
 
       - name: Echo image uri
         run: |
-          echo "ImageURI (quay.io): quay.io/${{ env.USER }}/${{ env.IMAGE_NAME }}:${{ needs.pre-build.outputs.git_sha_short }}-${{ github.run_number }}"
+          echo "ImageURI (quay.io): quay.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ needs.pre-build.outputs.git_sha_short }}-${{ github.run_number }}"
           
   # Post-Action Stage
   post-build:
     needs: [pre-build,build-runner]
     uses: daeuniverse/ci-seed-jobs/.github/workflows/notify-build-result.yml@master
     with:
-      USER: ${{ needs.build-runner.outputs.user }}
       IMAGE_NAME: ${{ needs.build-runner.outputs.image_name }}
       SHA_SHORT: ${{ needs.pre-build.outputs.git_sha_short }}
     secrets:
