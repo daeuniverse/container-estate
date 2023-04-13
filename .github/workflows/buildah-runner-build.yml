@@ -16,7 +16,7 @@ jobs:
     secrets:
       TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
       TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-      
+
   # Build Stage
   build-runner:
     runs-on: ubuntu-latest
@@ -44,7 +44,7 @@ jobs:
       - name: Echo image uri
         run: |
           echo "ImageURI (quay.io): quay.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ needs.pre-build.outputs.git_sha_short }}-${{ github.run_number }}"
-          
+
   # Post-Action Stage
   post-build:
     needs: [pre-build,build-runner]
