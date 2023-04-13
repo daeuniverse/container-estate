@@ -8,31 +8,13 @@ on:
     paths:
       - .github/workflows/buildah-runner-build.yml
       - buildah-runner-dockerfile
+
+env:
+  DOCKER_FILE: "buildah-runner-dockerfile"
+  USER: "daeuniverse"
+  IMAGE_NAME: "buildah-runner"
+
 jobs:
-#   # Pre-Action Stage
-#   pre-build:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Get HEAD git sha
-#         id: export_commit_sha
-#         run: |
-#           echo "sha_long=${{ github.sha }}" >> $GITHUB_OUTPUT
-#           echo "sha_short=$(echo ${{ github.sha }} | cut -c1-6)" >> $GITHUB_OUTPUT
-          
-#       - name: Send telegram message on push
-#         uses: appleboy/telegram-action@master
-#         with:
-#           to: ${{ secrets.TELEGRAM_TO }}
-#           token: ${{ secrets.TELEGRAM_TOKEN }}
-#           format: markdown
-#           message: |
-#             🔨 ${{ github.actor }} pushed a new commit: ${{ steps.export_commit_sha.outputs.sha_short }} to [${{ github.repository }}](https://github.com/daeuniverse/container-estate) - [#${{ github.run_number }}](https://github.com/daeuniverse/container-estate/actions/runs/${{ github.run_id }}) 
-            
-#             [${{ steps.export_commit_sha.outputs.sha_short }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }}): ${{ github.event.commits[0].message }} by [${{ github.actor }}](https://http://github.com/yqlbu)
-    
-#     outputs:
-#       git_sha_long: ${{ steps.export_commit_sha.outputs.sha_long }}
-#       git_sha_short: ${{ steps.export_commit_sha.outputs.sha_short }}
   # Pre-Action Stage
   pre-build:
     uses: daeuniverse/ci-seed-jobs/.github/workflows/notify-build-start.yml@master
@@ -44,10 +26,6 @@ jobs:
   build-runner:
     runs-on: ubuntu-latest
     needs: [pre-build]
-    env:
-      DOCKER_FILE: "buildah-runner-dockerfile"
-      USER: "daeuniverse"
-      IMAGE_NAME: "buildah-runner"
     steps:
       - uses: actions/checkout@master
       - name: Kaniko build - quay.io
@@ -69,18 +47,28 @@ jobs:
           
   # Post-Action Stage
   post-build:
-    runs-on: ubuntu-latest
     needs: [pre-build,build-runner]
-    steps:     
-      - name: Send telegram message on push
-        uses: appleboy/telegram-action@master
-        with:
-          to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          format: markdown
-          message: |
-            🏗 ${{ github.repository }}: Build #${{ github.run_number }} succeeded!
+    uses: daeuniverse/ci-seed-jobs/.github/workflows/notify-build-result.yml@master
+    with:
+      USER: ${{ env.USER }}
+      IMAGE_NAME: ${{ env.IMAGE_NAME }}
+      SHA_SHORT: ${{ needs.pre-build.outputs.git_sha_short }}
+    secrets:
+      TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
+      TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+#   post-build:
+#     runs-on: ubuntu-latest
+#     needs: [pre-build,build-runner]
+#     steps:     
+#       - name: Send telegram message on push
+#         uses: appleboy/telegram-action@master
+#         with:
+#           to: ${{ secrets.TELEGRAM_TO }}
+#           token: ${{ secrets.TELEGRAM_TOKEN }}
+#           format: markdown
+#           message: |
+#             🏗 ${{ github.repository }}: Build #${{ github.run_number }} succeeded!
             
-            📦 Image URI: quay.io/${{ env.USER }}/${{ env.IMAGE_NAME }}:${{ needs.pre-build.outputs.git_sha_short }}-${{ github.run_number }}
+#             📦 Image URI: quay.io/${{ env.USER }}/${{ env.IMAGE_NAME }}:${{ needs.pre-build.outputs.git_sha_short }}-${{ github.run_number }}
             
-            🔨 Build Detail: [#${{ github.run_number }}](https://github.com/daeuniverse/container-estate/actions/runs/${{ github.run_id }})
+#             🔨 Build Detail: [#${{ github.run_number }}](https://github.com/daeuniverse/container-estate/actions/runs/${{ github.run_id }})
