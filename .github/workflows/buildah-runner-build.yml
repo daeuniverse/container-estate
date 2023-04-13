@@ -9,30 +9,33 @@ on:
       - .github/workflows/buildah-runner-build.yml
       - buildah-runner-dockerfile
 jobs:
+#   # Pre-Action Stage
+#   pre-build:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Get HEAD git sha
+#         id: export_commit_sha
+#         run: |
+#           echo "sha_long=${{ github.sha }}" >> $GITHUB_OUTPUT
+#           echo "sha_short=$(echo ${{ github.sha }} | cut -c1-6)" >> $GITHUB_OUTPUT
+          
+#       - name: Send telegram message on push
+#         uses: appleboy/telegram-action@master
+#         with:
+#           to: ${{ secrets.TELEGRAM_TO }}
+#           token: ${{ secrets.TELEGRAM_TOKEN }}
+#           format: markdown
+#           message: |
+#             🔨 ${{ github.actor }} pushed a new commit: ${{ steps.export_commit_sha.outputs.sha_short }} to [${{ github.repository }}](https://github.com/daeuniverse/container-estate) - [#${{ github.run_number }}](https://github.com/daeuniverse/container-estate/actions/runs/${{ github.run_id }}) 
+            
+#             [${{ steps.export_commit_sha.outputs.sha_short }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }}): ${{ github.event.commits[0].message }} by [${{ github.actor }}](https://http://github.com/yqlbu)
+    
+#     outputs:
+#       git_sha_long: ${{ steps.export_commit_sha.outputs.sha_long }}
+#       git_sha_short: ${{ steps.export_commit_sha.outputs.sha_short }}
   # Pre-Action Stage
   pre-build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get HEAD git sha
-        id: export_commit_sha
-        run: |
-          echo "sha_long=${{ github.sha }}" >> $GITHUB_OUTPUT
-          echo "sha_short=$(echo ${{ github.sha }} | cut -c1-6)" >> $GITHUB_OUTPUT
-          
-      - name: Send telegram message on push
-        uses: appleboy/telegram-action@master
-        with:
-          to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          format: markdown
-          message: |
-            🔨 ${{ github.actor }} pushed a new commit: ${{ steps.export_commit_sha.outputs.sha_short }} to [${{ github.repository }}](https://github.com/daeuniverse/container-estate) - [#${{ github.run_number }}](https://github.com/daeuniverse/container-estate/actions/runs/${{ github.run_id }}) 
-            
-            [${{ steps.export_commit_sha.outputs.sha_short }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }}): ${{ github.event.commits[0].message }} by [${{ github.actor }}](https://http://github.com/yqlbu)
-    
-    outputs:
-      git_sha_long: ${{ steps.export_commit_sha.outputs.sha_long }}
-      git_sha_short: ${{ steps.export_commit_sha.outputs.sha_short }}
+    uses: daeuniverse/container-estate/.github/workflows/notify-build-start.yml@master
       
   # Build Stage
   build-runner:
