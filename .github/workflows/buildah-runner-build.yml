@@ -9,6 +9,11 @@ on:
       - .github/workflows/buildah-runner-build.yml
       - buildah-runner-dockerfile
 
+env:
+  DOCKER_FILE: "buildah-runner-dockerfile"
+  USER: "daeuniverse"
+  IMAGE_NAME: "buildah-runner"
+
 jobs:
   # Pre-Action Stage
   pre-build:
@@ -21,10 +26,10 @@ jobs:
   build-runner:
     runs-on: ubuntu-latest
     needs: [pre-build]
-    env:
-      DOCKER_FILE: "buildah-runner-dockerfile"
-      USER: "daeuniverse"
-      IMAGE_NAME: "buildah-runner"
+#     env:
+#       DOCKER_FILE: "buildah-runner-dockerfile"
+#       USER: "daeuniverse"
+#       IMAGE_NAME: "buildah-runner"
     outputs:
       user: ${{ env.USER }}
       image_name: ${{ env.IMAGE_NAME }}
@@ -52,9 +57,12 @@ jobs:
     needs: [pre-build,build-runner]
     uses: daeuniverse/ci-seed-jobs/.github/workflows/notify-build-result.yml@master
     with:
-      USER: ${{ needs.build-runner.outputs.user }}
-      IMAGE_NAME: ${{ needs.build-runner.outputs.image_name }}
-      SHA_SHORT: ${{ needs.pre-build.outputs.git_sha_short }}
+#       USER: ${{ needs.build-runner.outputs.user }}
+#       IMAGE_NAME: ${{ needs.build-runner.outputs.image_name }}
+#       SHA_SHORT: ${{ needs.pre-build.outputs.git_sha_short }}
+      USER: ${{ env.USER }}
+      IMAGE_NAME: ${{ env.IMAGE_NAME }}
+      SHA_SHORT: ${{ env.SHA_SHORT }}
     secrets:
       TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
       TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
