@@ -26,6 +26,7 @@ jobs:
       IMAGE_NAME: "buildah-runner"
     outputs:
       image_name: ${{ env.IMAGE_NAME }}
+      image_tag: ${{ needs.pre-build.outputs.git_sha_short }}-${{ github.run_number }}
     steps:
       - uses: actions/checkout@master
       - name: Kaniko build - quay.io
@@ -51,6 +52,7 @@ jobs:
     uses: daeuniverse/ci-seed-jobs/.github/workflows/notify-build-result.yml@master
     with:
       IMAGE_NAME: ${{ needs.build-runner.outputs.image_name }}
+      IMAGE_TAG: ${{ needs.build-runner.outputs.image_tag }}
       SHA_SHORT: ${{ needs.pre-build.outputs.git_sha_short }}
     secrets:
       TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
