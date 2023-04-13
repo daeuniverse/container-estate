@@ -36,6 +36,9 @@ jobs:
   # Pre-Action Stage
   pre-build:
     uses: daeuniverse/ci-seed-jobs/.github/workflows/notify-build-start.yml@master
+    secrets:
+      TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
+      TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
       
   # Build Stage
   build-runner:
