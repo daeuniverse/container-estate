@@ -24,13 +24,9 @@ jobs:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: markdown
           message: |
-            🔨 ${{ github.actor }} pushed a new commit: ${{ steps.export_commit_sha.outputs.sha_short }} to [${{ github.repository }}](https://github.com/daeuniverse/container-estate)
+            🔨 ${{ github.actor }} pushed a new commit: ${{ steps.export_commit_sha.outputs.sha_short }} to [${{ github.repository }}](https://github.com/daeuniverse/container-estate) - [#${{ github.run_number }}](https://github.com/daeuniverse/container-estate/actions/runs/${{ github.run_id }}) 
             
-            Commit message: ${{ github.event.commits[0].message }}
-            
-            Build Status: [#${{ github.run_number }}](https://github.com/daeuniverse/container-estate/actions/runs/${{ github.run_id }})
-            
-            Changes: [${{ steps.export_commit_sha.outputs.sha_short }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
+            [${{ steps.export_commit_sha.outputs.sha_short }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }}): ${{ github.event.commits[0].message }}
 
       - name: Kaniko build - quay.io
         id: quay_build
@@ -56,8 +52,8 @@ jobs:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: markdown
           message: |
-            🏗 Build #${{ github.run_number }} succeeded!
+            🏗 ${{ github.repository }}: Build #${{ github.run_number }} succeeded!
             
             Image URI: 📦 quay.io/${{ env.USER }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}-${{ env.SHORT_SHA }}-${{ github.run_number }}
             
-            Build Detail: [${{ github.run_number }}](https://github.com/daeuniverse/container-estate/actions/runs/${{ github.run_id }})
+            Build Detail: [#${{ github.run_number }}](https://github.com/daeuniverse/container-estate/actions/runs/${{ github.run_id }})
