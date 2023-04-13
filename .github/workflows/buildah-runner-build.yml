@@ -35,7 +35,7 @@ jobs:
 #       git_sha_short: ${{ steps.export_commit_sha.outputs.sha_short }}
   # Pre-Action Stage
   pre-build:
-    uses: daeuniverse/container-estate/.github/workflows/notify-build-start.yml@master
+    uses: daeuniverse/ci-seed-jobs/.github/workflows/notify-build-start.yml@master
       
   # Build Stage
   build-runner:
