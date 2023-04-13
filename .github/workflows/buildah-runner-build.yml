@@ -22,9 +22,10 @@ jobs:
     env:
       DOCKER_FILE: "buildah-runner-dockerfile"
       IMAGE_NAME: "buildah-runner"
+      IMAGE_TAG: ${{ github.head_ref || github.ref_name }}-${{ needs.pre-build.outputs.git_sha_short }}-${{ github.run_number }}
     outputs:
       image_name: ${{ env.IMAGE_NAME }}
-      image_tag: ${{ needs.pre-build.outputs.git_sha_short }}-${{ github.run_number }}
+      image_tag: ${{ env.IMAGE_TAG }}
     steps:
       - uses: actions/checkout@master
       - name: Kaniko build - quay.io
@@ -36,13 +37,13 @@ jobs:
           password: ${{ secrets.QUAY_PASS }}
           image: ${{ github.repository_owner }}/${{ env.IMAGE_NAME }}
           build_file: ${{ env.DOCKER_FILE }}
-          tag: ${{ needs.pre-build.outputs.git_sha_short }}-${{ github.run_number }}
+          tag: ${{ env.IMAGE_TAG }}
           cache: true
           cache_registry: quay.io/${{ github.repository_owner }}/cache
 
       - name: Echo image uri
         run: |
-          echo "ImageURI (quay.io): quay.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ needs.pre-build.outputs.git_sha_short }}-${{ github.run_number }}"
+          echo "ImageURI (quay.io): quay.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}"
 
   # Post-Action Stage
   post-build:
