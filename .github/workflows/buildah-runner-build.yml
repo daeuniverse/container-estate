@@ -2,6 +2,12 @@
 name: Build buildah-runner
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - .github/workflows/buildah-runner-build.yml
+      - buildah-runner-dockerfile
 jobs:
   build-runner:
     runs-on: ubuntu-latest
@@ -54,6 +60,6 @@ jobs:
           message: |
             🏗 ${{ github.repository }}: Build #${{ github.run_number }} succeeded!
             
-            Image URI: 📦 quay.io/${{ env.USER }}/${{ env.IMAGE_NAME }}:${{ steps.export_commit_sha.outputs.sha_short }}-${{ github.run_number }}
+            📦 Image URI: quay.io/${{ env.USER }}/${{ env.IMAGE_NAME }}:${{ steps.export_commit_sha.outputs.sha_short }}-${{ github.run_number }}
             
-            Build Detail: [#${{ github.run_number }}](https://github.com/daeuniverse/container-estate/actions/runs/${{ github.run_id }})
+            🔨 Build Detail: [#${{ github.run_number }}](https://github.com/daeuniverse/container-estate/actions/runs/${{ github.run_id }})
