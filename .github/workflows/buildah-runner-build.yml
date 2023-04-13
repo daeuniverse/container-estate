@@ -23,7 +23,7 @@ jobs:
     needs: [pre-build]
     env:
       DOCKER_FILE: "buildah-runner-dockerfile"
-      USER: ${{ vars.ORGANIZATION_VAR }}
+      USER: ${{ github.repository_owner }}
       IMAGE_NAME: "buildah-runner"
     outputs:
       user: ${{ env.USER }}
